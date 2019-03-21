@@ -1,2 +1,3 @@
 # sw-challenge
-Repository for the Star Wars API Challenge.
+
+Repository for the Star Wars Challenge API.
