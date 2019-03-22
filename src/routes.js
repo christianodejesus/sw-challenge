@@ -9,9 +9,8 @@ router.get('/', (req, res) => {
 })
 
 router.get('/planetas', PlanetasController.list)
-
+router.get('/planetas/:id', PlanetasController.show)
 router.post('/planetas', PlanetasController.create)
-
-// router.get('/planetas', (req, res) => {})
+router.delete('/planetas/:id', PlanetasController.remove)
 
 module.exports = router

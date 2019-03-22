@@ -1,5 +1,4 @@
 const truncate = require('../utils/truncate')
-const database = require('../../src/database')
 const Planeta = require('../../src/models/Planeta')
 
 describe('Model Planeta', () => {
@@ -19,6 +18,6 @@ describe('Model Planeta', () => {
   })
 
   afterAll(async () => {
-    await database.disconnect()
+    await Planeta.db.close()
   })
 })

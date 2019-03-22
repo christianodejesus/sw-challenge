@@ -1,9 +1,9 @@
 const database = require('../../src/database')
 
-module.exports = () => {
-  Promise.all(
-    Object.keys(database.models).map(modelName =>
-      database.model(modelName).deleteMany()
-    )
+module.exports = async () => {
+  await Promise.all(
+    Object.keys(database.models).map(async modelName => {
+      await database.model(modelName).deleteMany({})
+    })
   )
 }
