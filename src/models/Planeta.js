@@ -13,10 +13,6 @@ const PlanetaSchema = new mongoose.Schema({
   terreno: {
     type: String,
     required: true
-  },
-  qtdeAparicoes: {
-    type: Number,
-    required: true
   }
 })
 

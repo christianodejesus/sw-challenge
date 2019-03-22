@@ -8,6 +8,7 @@ const dbUrl = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${
   process.env.DB_NAME
 }`
 
+mongoose.set('useCreateIndex', true)
 mongoose.connect(dbUrl, { useNewUrlParser: true })
 mongoose.Promise = global.Promise
 

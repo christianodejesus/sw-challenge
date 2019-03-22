@@ -1,24 +1,21 @@
-const faker = require('faker')
 const truncate = require('../utils/truncate')
 const database = require('../../src/database')
-const Planeta = require('../../src/models/planeta')
+const Planeta = require('../../src/models/Planeta')
 
-describe('Planeta Model', () => {
+describe('Model Planeta', () => {
   beforeEach(async () => {
     await truncate()
   })
 
   it('should Planeta model creates a document in the database successfully', async () => {
-    const planetaObj = {
-      nome: faker.name.findName(),
-      clima: faker.lorem.words(1),
-      terreno: faker.lorem.words(2).replace(' ', ','),
-      qtdeAparicoes: 2
-    }
-    const newPlaneta = await Planeta.create(planetaObj)
+    const planeta = await Planeta.create({
+      nome: 'Alderaan',
+      clima: 'temperate',
+      terreno: 'grasslands, mountains'
+    })
 
-    expect(newPlaneta).toHaveProperty('id')
-    expect(newPlaneta.id).not.toBeNull()
+    expect(planeta).toHaveProperty('id')
+    expect(planeta.id).not.toBeNull()
   })
 
   afterAll(async () => {

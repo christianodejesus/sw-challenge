@@ -3,13 +3,17 @@ require('dotenv').config({
 })
 const express = require('express')
 const bodyparser = require('body-parser')
-const router = require('./routes')
-// const database = require('./database')
+const routes = require('./routes')
 
 const app = express()
 
 app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({ extended: false }))
-app.use(router)
+app.get('/', (req, res) => {
+  res.json({
+    mensagem: 'Star Wars Challenge API'
+  })
+})
+app.use('/api', routes)
 
 module.exports = app
