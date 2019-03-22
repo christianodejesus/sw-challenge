@@ -1,11 +1,11 @@
-const router = require('express').Router();
+const router = require('express').Router()
 
 router.get('/', (req, res) => {
   res.json({
-    mensagem: 'Star Wars Challenge API',
-  });
-});
+    mensagem: 'Star Wars Challenge API'
+  })
+})
 
 // router.get('/planetas', (req, res) => {})
 
-module.exports = router;
+module.exports = router

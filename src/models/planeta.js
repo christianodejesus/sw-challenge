@@ -1,25 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const PlanetaSchema = new mongoose.Schema({
   nome: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   clima: {
     type: String,
-    required: true,
+    required: true
   },
   terreno: {
     type: String,
-    required: true,
+    required: true
   },
   qtdeAparicoes: {
     type: Number,
-    required: true,
-  },
-});
+    required: true
+  }
+})
 
-const Planeta = mongoose.model('Planeta', PlanetaSchema);
+const Planeta = mongoose.model('Planeta', PlanetaSchema)
 
-module.exports = Planeta;
+module.exports = Planeta
