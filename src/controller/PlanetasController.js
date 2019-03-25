@@ -1,6 +1,27 @@
 const httpStatus = require('http-status')
 const Planeta = require('../models/Planeta')
-// const http = require('http')
+const swapi = require('swapi-node')
+
+const Util = {
+  async getExternalPlanetInfo (planeta) {
+    const planetInfo = await swapi
+      .get(`https://swapi.co/api/planets/?search=${planeta.nome}`)
+      .then(result => {
+        return result
+      })
+
+    const qtdeAparicoesFilmes =
+      planetInfo.count > 0 ? planetInfo.results[0].films.length : 0
+
+    return {
+      _id: planeta._id,
+      nome: planeta.nome,
+      clima: planeta.clima,
+      terreno: planeta.terreno,
+      qtdeAparicoesFilmes
+    }
+  }
+}
 
 const PlanetasController = {
   async create (req, res) {
@@ -38,12 +59,18 @@ const PlanetasController = {
       }
     }
 
-    await Planeta.find(filters, (error, planetas) => {
+    await Planeta.find(filters, async (error, planetas) => {
       if (error) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
           mensagem: 'You have a error in planets listing',
           error
         })
+      }
+
+      if (planetas.length > 0) {
+        for (let i = 0; i < planetas.length; i++) {
+          planetas[i] = await Util.getExternalPlanetInfo(planetas[i])
+        }
       }
 
       return res.json({
@@ -56,13 +83,15 @@ const PlanetasController = {
   async show (req, res) {
     const id = req.params.id
 
-    await Planeta.findById(id, (error, planeta) => {
+    await Planeta.findById(id, async (error, planeta) => {
       if (error) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
           mensagem: 'You have a error in planet filter',
           error
         })
       }
+
+      planeta = await Util.getExternalPlanetInfo(planeta)
 
       return res.json({
         count: 1,
@@ -74,18 +103,20 @@ const PlanetasController = {
   async remove (req, res) {
     const id = req.params.id
 
-    await Planeta.findByIdAndDelete(id, (error, planeta) => {
-      if (error) {
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-          mensagem: 'You have a error in planet delete',
-          error
-        })
-      }
+    try {
+      await Planeta.findByIdAndDelete(id, (error, planeta) => {
+        if (error) {
+          return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            mensagem: 'You have a error in planet delete',
+            error
+          })
+        }
 
-      return res.json({
-        mensagem: 'Planet deleted successfully'
+        return res.json({
+          mensagem: 'Planet deleted successfully'
+        })
       })
-    })
+    } catch (error) {}
   }
 }
 

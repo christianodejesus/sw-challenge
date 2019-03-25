@@ -150,11 +150,9 @@ describe('Planetas API Routes', () => {
 
     const novoPlaneta = res.body.data.planeta
 
-    // const resDel = await request(server).delete(
-    //   `/api/planetas/${novoPlaneta._id}`
-    // )
-
-    const resDel = await request(server).delete(`/api/planetas/aa`)
+    const resDel = await request(server).delete(
+      `/api/planetas/${novoPlaneta._id}`
+    )
 
     expect(resDel.status).toBe(http.OK)
     expect(resDel.body).toHaveProperty('mensagem')
@@ -167,6 +165,26 @@ describe('Planetas API Routes', () => {
       })
 
     expect(planeta).not.toBeInstanceOf(Object)
+  })
+
+  it('should receive a status code 500 when performs a DELETE to "/api/planetas/:id" endpoint passing an invalid ID', async () => {
+    const res = await request(server)
+      .post('/api/planetas')
+      .send({
+        nome: 'Alderaan',
+        clima: 'temperate',
+        terreno: 'grasslands, mountains'
+      })
+
+    expect(res.status).toBe(http.OK)
+    expect(res.body).toHaveProperty('mensagem')
+    expect(res.body.mensagem).toBe('Planet saved successfully')
+
+    const resDel = await request(server).delete(`/api/planetas/abc123`)
+
+    expect(resDel.status).toBe(http.INTERNAL_SERVER_ERROR)
+    expect(resDel.body).toHaveProperty('mensagem')
+    expect(resDel.body.mensagem).toBe('You have a error in planet delete')
   })
 
   afterAll(async () => {
